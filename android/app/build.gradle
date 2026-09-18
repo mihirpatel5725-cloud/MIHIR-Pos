@@ -1,0 +1,16 @@
+plugins { id 'com.android.application'; id 'org.jetbrains.kotlin.android' }
+
+android { namespace 'com.rk.billing'; compileSdk 35
+    defaultConfig { applicationId 'com.rk.billing'; minSdk 23; targetSdk 35; versionCode 1; versionName '1.0.0' }
+    buildTypes { release { minifyEnabled false; proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro' } }
+    buildFeatures { buildConfig true }
+    sourceSets { main { assets.srcDirs = [file('src/main/assets')] } }
+}
+
+tasks.register('copyWebAssets', Copy) {
+    from('../index.html', '../style.css', '../script.js', '../manifest.json', '../service-worker.js')
+    into('src/main/assets')
+}
+preBuild.dependsOn(copyWebAssets)
+
+dependencies { implementation 'androidx.core:core-ktx:1.15.0'; implementation 'androidx.appcompat:appcompat:1.7.0' }
